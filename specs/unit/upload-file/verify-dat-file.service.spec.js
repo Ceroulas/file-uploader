@@ -47,22 +47,4 @@ describe('verifyDatFile.Service', function(){
 
 		expect(result).toBe(false);
 	});	
-
-	it('it should return false, input is not a file', function(){
-		var file = '';
-
-		var result = verifyDatFileObj.verifyIfIsDatFile(file);
-
-		expect(mockWindow.alert).toHaveBeenCalledWith("Not a file.");
-		expect(result).toBe(false);
-	});
-
-	it('it should return false, file does not have property name', function(){
-		var file = { something: 'text.dat'};
-
-		var result = verifyDatFileObj.verifyIfIsDatFile(file);
-
-		expect(mockWindow.alert).toHaveBeenCalledWith("Not a file.");
-		expect(result).toBe(false);
-	});
 });

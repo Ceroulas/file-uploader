@@ -9,7 +9,6 @@ angular.module('uploadApp')
 
 		        if(verifyDatFile.verifyIfIsDatFile(file)){
 			        $scope.isProcessing  = true;
-			        
 					fileUpload.uploadFileToUrl(file, uploadUrl)
 							.then(( result )=>{
 	 								$scope.isProcessing  = false;

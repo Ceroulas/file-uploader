@@ -1,20 +1,14 @@
 angular.module('uploadApp')
 		.controller('LogController', [ '$scope','$http', function( $scope, $http ) {
 			$scope.content = '';
-			//$scope.ready = false;
+			$scope.ready = false;
+			let socket = io.connect('/');
 
-			$http.get('/log').then(function(data) {
-				$scope.content = data.data;
+			socket.on('send msg', function(msg){
+				console.log('message: ' + msg);
+				$scope.content += msg;
+				if(msg.search('Processing of file ended.') !== -1)
+					$scope.ready = true;
 			});
-		/*	var socket = io('/log');
-
-			socket.on('get msg', function(data){
-				$scope.$apply(function() {
-					$scope.message += data;
-
-					if(data.search('Processing of file ended.') !== -1){
-						$scope.ready = true;
-					}
-				});
-  			});*/
-		}]);
+			
+		}]);	

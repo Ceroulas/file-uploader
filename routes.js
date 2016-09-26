@@ -1,29 +1,36 @@
 'use strict';
 const multer = require('multer');
-const http = require('http');
-const io = require('socket.io-client');
+const ioClient = require('socket.io-client');
 
 const etlServerUrl = 'http://localhost:8000';
-const socket = io.connect(etlServerUrl, {reconnect: true});
+let socketClient; 
 
 let fileName;
 
-module.exports = function(app) {
+module.exports = function(app, io) {
 
 	app.post('/upload', function(req, res){
-        console.log(req.headers)
         res.redirect(307, etlServerUrl + req.path);
 	});
 
-	app.get('/log', function( req, res ){
-        console.log('Entrei log')
-        socket.on('get msg', function(data){
-            console.log(data);
-        });
-    });
-
-	app.get('/report', function(req, res){
+    app.get('/report', function(req, res){
         res.redirect(307, etlServerUrl + req.path);
     });
 
+    socketIO(io);    
+}
+
+function socketIO (io){
+    socketClient = ioClient.connect(etlServerUrl, {reconnect: true});
+    console.log('conectei no socket server to server: file-uploader');
+
+    socketClient.on('get msg', function(data){
+        
+        console.log('data: '+ data);
+        
+        io.on('connection', function(socket){
+                console.log('User connected file-uploader: ');
+                socket.emit('send msg',data.toString()+'\n');
+        });  
+    });
 }

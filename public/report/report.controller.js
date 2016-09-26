@@ -5,5 +5,4 @@ angular.module('uploadApp')
 			$http.get('/report').then(function(data) {
 				$scope.content = data.data;
 			});
-
 		}]);

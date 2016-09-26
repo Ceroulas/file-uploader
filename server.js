@@ -2,15 +2,15 @@
 
 const express = require('express');
 const app = express();
-//const http = require('http').Server(app);
-//const io = require('socket.io')(http);
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
 
 const port = 3000;
 
 app.use(express.static(__dirname + '/public'));
 
-require('./routes')(app);
+require('./routes')(app, io);
 
-app.listen(port, function(){
+http.listen(port, function(){
 	console.log('App listening on port: '+ port);
 });
