@@ -3,9 +3,6 @@ const multer = require('multer');
 const ioClient = require('socket.io-client');
 
 const etlServerUrl = 'http://localhost:8000';
-let socketClient; 
-
-let fileName;
 
 module.exports = function(app, io) {
 
@@ -21,16 +18,12 @@ module.exports = function(app, io) {
 }
 
 function socketIO (io){
-    socketClient = ioClient.connect(etlServerUrl, {reconnect: true});
-    console.log('conectei no socket server to server: file-uploader');
+     io.of('/log').on('connection', function(socket){
+        let socketClient = ioClient(etlServerUrl, {reconnect: true});
+        console.log('file-uploader user connected');
 
-    socketClient.on('get msg', function(data){
-        
-        console.log('data: '+ data);
-        
-        io.on('connection', function(socket){
-                console.log('User connected file-uploader: ');
-                socket.emit('send msg',data.toString()+'\n');
+        socketClient.on('get msg', function(data){  
+            socket.emit('send msg',data.toString()+'\n');
         });  
     });
 }

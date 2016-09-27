@@ -9,7 +9,7 @@ const port = 3000;
 
 app.use(express.static(__dirname + '/public'));
 
-require('./routes')(app, io);
+require('./routes/routes')(app, io);
 
 http.listen(port, function(){
 	console.log('App listening on port: '+ port);
